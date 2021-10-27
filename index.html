@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // CALLBACKS
+
+        // A callback function is a function that is getting passed as a parameter 
+        // and is called inside of the function where it gets passed after some processing.
+
+        function customCallbackFunction() { // void function
+            console.log("Hello i am callback")
+            // return undefined
+        }
+
+        // function customCallbackWithReturn() { // fruitful function
+        //     return function () {
+        //         console.log("Hello i am callback 2")
+        //     }
+        // }
+
+
+        function doSomethingAndCallbackAfter(callbackFn) { // function
+            alert("Hello there")
+            callbackFn() // function()
+        }
+
+        window.onload = () => {
+            // doSomethingAndCallbackAfter(customCallbackFunction)
+            // doSomethingAndCallbackAfter(customCallbackFunction) // returns a function
+            // doSomethingAndCallbackAfter("just a string")
+
+            // fetch("https://randomuser.me/api")
+            //     .then(response => {
+            //         console.log(response)
+
+            //         if (response.ok) {
+            //             return response.json()
+            //         } else throw new Error("this is the error message")
+            //     })
+            //     .then(body => {
+            //         console.log(body)
+
+            //         console.log(body.results[0].email)
+            //     })
+            //     .catch(error => {
+            //         console.error(error)
+            //     })
+
+            fetch("https://strive-proxy.herokuapp.com/https://api.deezer.com/search?q=queen")
+                .then(r => r.json())
+                .then(jsondata => {
+                    document.body.innerHTML = jsondata.data
+                        .filter(result => result.duration > 300)
+                        .map(result => `
+                            <li>
+                                <a style="display:block" href="${result.preview}">
+                                    <img src="${result.album.cover_big}" style="width:100px">
+                                    Listen to ${result.title} by ${result.artist.name}
+                                </a>
+                            </li>
+                        `)
+                        .join('')
+                })
+                .catch(err => { console.log(err) })
+
+        }
+    </script>
+</body>
+
+</html>
